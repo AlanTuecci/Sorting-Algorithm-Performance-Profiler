@@ -1,6 +1,3 @@
-//Alan Tuecci
-//January 13, 2023
-
 #include <vector> 
 #include <algorithm>
 #include <chrono>
@@ -12,7 +9,7 @@ inline int newChild(int hole) {
     return hole * 2;
 }
 
-// Internal method to percolate down at a hole
+// Internal method used to percolate down at a hole
 void percDown(std::vector<int> &heap, std::vector<int>::size_type hole, std::vector<int>::size_type size) {
     int tmp = std::move(heap[hole - 1]); 
     int child = newChild(hole);
@@ -32,15 +29,19 @@ void percDown(std::vector<int> &heap, std::vector<int>::size_type hole, std::vec
     heap[hole - 1] = std::move(tmp);
 }
 
-// Internal method to build the heap
+// Internal method used to build the heap
 void buildHeap(std::vector<int> &heap) {
     for (int i = heap.size() / 2; i > 0; --i) {
         percDown(heap, i, heap.size());
     }
 }
 
-// Modify heapsort to sort the entire vector
-int heapSort(std::vector<int> &nums, int &duration) {
+/**
+ * @param: a reference to a vector of integers to be sorted
+ * @param: a reference to an integer that will be used to store the amount of time used (in milliseconds)
+ * @post: sorts the vector using an implementation of Heap Sort algorithm and measures the amount of time the sorting operation took (in milliseconds)
+**/
+void heapSort(std::vector<int> &nums, int &duration) {
     auto start = HRC::now();
 
     buildHeap(nums); 
@@ -52,11 +53,4 @@ int heapSort(std::vector<int> &nums, int &duration) {
     auto end = HRC::now();
     auto execTime = std::chrono::duration_cast<MSEC>(end-start);
     duration = execTime.count();
-
-    std::vector<int>::iterator mid = nums.begin() - 1 + nums.size() / 2;
-    if(nums.size() % 2 != 0){
-        mid++;
-    }
-    
-    return *mid;
 }
